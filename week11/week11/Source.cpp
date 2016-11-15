@@ -95,7 +95,7 @@ int main()
 	}
 	
 
-	LinearHypothesis hiden_layer;
+	LinearHypothesis hidden_layer;
 	LinearHypothesis output_layer;
 
 	for (int tr = 0; tr < 10000; tr++)
@@ -104,7 +104,7 @@ int main()
 		{
 			// let's train our linear hypothesis to answer correctly!
 			const float x0_input = input[i];
-			const float y0_output = hiden_layer.getY(x0_input);
+			const float y0_output = hidden_layer.getY(x0_input);
 			const float x1_input = y0_output;
 			const float y1_output = output_layer.getY(x1_input);
 			const float y_target = output[i];
@@ -121,13 +121,13 @@ int main()
 														 // d sqr_error / da = 2*0.5*(a * x + b - y_target) * x; 
 														 // d sqr_error / db = 2*0.5*(a * x + b - y_target) * 1;
 			const float dse_over_da0 = error * output_layer.a_ * x0_input;
-			const float dse_over_da1 = error * (hiden_layer.a_*x0_input + hiden_layer.b_);
+			const float dse_over_da1 = error * (hidden_layer.a_*x0_input + hidden_layer.b_);
 			const float dse_over_db0 = error * output_layer.a_;
 			const float dse_over_db1 = error;
 
 			const float lr = 0.01;
-			hiden_layer.a_ -= dse_over_da0 * lr;
-			hiden_layer.b_ -= dse_over_db0 * lr;
+			hidden_layer.a_ -= dse_over_da0 * lr;
+			hidden_layer.b_ -= dse_over_db0 * lr;
 			output_layer.a_ -= dse_over_da1 * lr;
 			output_layer.b_ -= dse_over_db1 * lr;
 
@@ -139,12 +139,12 @@ int main()
 		}
 	}
 	std::cout << "-------------------------------------------------------------------------------------\n";
-	std::cout << "neuronal Network method : input -> hidden_layer -> output_layer -> output" << std::endl;
-	std::cout << "a0: " << hiden_layer.a_ << "\tb0: " << hiden_layer.b_ << "\ta1: " << output_layer.a_ << "\tb1: " << output_layer.b_ << std::endl;
+	std::cout << "neural Network method : input -> hidden_layer -> output_layer -> output" << std::endl;
+	std::cout << "a0: " << hidden_layer.a_ << "\tb0: " << hidden_layer.b_ << "\ta1: " << output_layer.a_ << "\tb1: " << output_layer.b_ << std::endl;
 	for (int i = 0; i < num_data; i++)
 	{
 		std::cout << "target: " << output[i] << std::endl;
-		std::cout << "trained: " << output_layer.getY(hiden_layer.getY(input[i])) << std::endl;
+		std::cout << "trained: " << output_layer.getY(hidden_layer.getY(input[i])) << std::endl;
 	}
 	
 	return 0;
